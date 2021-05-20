@@ -13,7 +13,7 @@ import logging
 from config import auth
 
 logging.basicConfig(filename='restore_test.log', level=logging.DEBUG)
-rubrikurl = "https://192.168.99.171/api/v1"
+rubrikurl = "https://ENTERYOURIP/api/v1"
 
 headers = auth
 
