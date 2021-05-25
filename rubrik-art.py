@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Automatic Restore Tester Rubrik
-
+# By Cristie Nordic AB
 # Author Chris Melin / Cristie Nordic AB
 # Version 1.0
 
@@ -10,13 +10,39 @@ import requests
 import json
 import random
 import logging
-from config import auth
+import os
+#from config import auth
 
 logging.basicConfig(filename='restore_test.log', level=logging.DEBUG)
-rubrikurl = "https://ENTERYOURIP/api/v1"
+#rubrikurl = "https://ENTERYOURIP/api/v1"
+#headers = auth
 
-headers = auth
 
+def get_config(rubrik_url=None, rubrik_auth=None, logname='restore_test.log'):
+    if rubrik_url:
+        print('URL has been set')
+    elif os.getenv('RUBRIK_URL'):
+        print('Find the Rubrik URL as a system variable')
+        rubrik_url = os.getenv('RUBRIK_URL')
+    else:
+        from config import RUBRIK_URL
+        print('URL is set to none')
+        rubrik_url = RUBRIK_URL
+
+
+
+    if rubrik_auth:
+        print('Auth has been set')
+    elif os.getenv('RUBRIK_AUTH'):
+        logging.info('Find the Rubrik Authentication as a system variable')
+        rubrik_auth = os.getenv('RUBRIK_AUTH')
+    else:
+        from config import RUBRIK_AUTH
+        print('Auth hasnt been set')
+        rubrik_auth = RUBRIK_AUTH
+
+
+    return(rubrik_url, rubrik_auth)
 
 def get_random_vm():
     vms = requests.get(rubrikurl+'/vmware/vm', headers=headers, verify=False).json()['data']
@@ -40,9 +66,9 @@ def get_random_snapshot(vmId):
 
 def restore_random_vm(powerOn = 'false', disableNetwork ='true'):
     """example : restore_random_vm('false','false') will not power on vm and will not disable network"""
-    
+
     restore_vm = get_random_vm()
-    logging.info('Random VM name %s:', restore_vm['name'])  
+    logging.info('Random VM name %s:', restore_vm['name'])
     restore_name='RestoreTest-'+restore_vm['name']
     logging.info('Restored VM name %s:', restore_name)
     restore_random_snapshot = get_random_snapshot(restore_vm['id'])
@@ -50,12 +76,6 @@ def restore_random_vm(powerOn = 'false', disableNetwork ='true'):
     logging.info(restore_url)
     payload = '{"vmName" : "'+restore_name+'", "powerOn" : '+powerOn+', "disableNetwork" : '+disableNetwork+'}'
     logging.info(payload)
-    
+
     restore_test = requests.post(restore_url, headers=headers, data=payload, verify=False)
     return restore_test
-
-
-
-
-
-
