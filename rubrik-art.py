@@ -102,7 +102,7 @@ def main():
         rubrik_url, rubrik_auth = get_config()
 
     art = restore_random_vm(rubrik_url=rubrik_url, rubrik_auth=rubrik_auth)
-    if art.status_code == '202':
+    if art.status_code == 202:
         print('Successfully restore VM...')
     else:
         print(art)
