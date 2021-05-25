@@ -2,4 +2,4 @@
 
 #auth = {'Authorization': 'Basic YWRtaW46U3RyYW5nZXA0YXNzdzByZA=='}
 RUBRIK_AUTH = 'YWRtaW46U3RyYW5nZXA0YXNzdzByZA=='
-RUBRIK_URL = 'IP or FQDN'
+RUBRIK_URL = 'rubrik.company.com'

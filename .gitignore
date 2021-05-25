@@ -4,6 +4,7 @@ include/
 pip-selfcheck.json
 
 # Cristie Files
+restore_test.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
